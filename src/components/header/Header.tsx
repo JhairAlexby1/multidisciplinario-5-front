@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const Header = () => {
   return (
@@ -19,19 +20,19 @@ export const Header = () => {
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <a href="#" className="text-[#333] hover:text-[#FFA500]">
+                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
                   Inicio
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-[#333] hover:text-[#FFA500]">
+                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
                 Configuración
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-[#333] hover:text-[#FFA500]">
-                  salir
-                </a>
+                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
+                Salir
+                </Link>
               </li>
             </ul>
           </nav>
