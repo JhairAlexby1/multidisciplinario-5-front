@@ -1,0 +1,1 @@
+import { LoadingComp } from './LoadingComp';
