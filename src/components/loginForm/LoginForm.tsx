@@ -1,11 +1,14 @@
 "use client"
-import { useState, useEffect } from 'react';
+
 import style from "./LoginForm.module.css"
 import Image from "next/image";
 import logo from '../../../public/logo_avii_2.png'
-
+import { useRouter } from 'next/navigation'
 export const LoginForm = () => {
-
+    const router = useRouter()
+    const btnLogin = async () => {
+        router.push('/homePage');
+    }
 
     return (
       <div className={style.containerFormLogin}>
@@ -18,7 +21,7 @@ export const LoginForm = () => {
                     <input className={style.inputPassword} type="password" id="password" required placeholder="CONTRASEÑA"  />
                 </div>
                 <div className={style.containerButtonLogin}>
-                <button className={style.buttonLogin} >Iniciar sesion</button>
+                <button onClick={btnLogin} className={style.buttonLogin} >Iniciar sesion</button>
                 </div>
             </div>
     )
