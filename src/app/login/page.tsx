@@ -1,4 +1,8 @@
+import { LoginForm } from "@/components/loginForm/LoginForm";
 import { Metadata } from "next";
+import style from "./Login.module.css"
+
+
 
 export const metadata: Metadata = {
   title: "Login Page",
@@ -6,8 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default function Login() {
+
+  
+
     return (
         <>
-            <h1>Login</h1>
+           <div className={style.login}>
+             <LoginForm/>
+           </div>
         </>
     )}
