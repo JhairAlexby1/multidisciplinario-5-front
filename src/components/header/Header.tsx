@@ -1,10 +1,17 @@
+import Image from 'next/image'
 
 export const Header = () => {
   return (
     <header className="bg-white py-4 shadow-md">
         <div className="container mx-auto flex items-center justify-between px-4">
           <div className="flex items-center">
-            <img src="/placeholder.svg" alt="Avii logo" className="h-12 w-12 rounded-full shadow-lg" />
+            <Image
+              className="h-12 w-12 rounded-full shadow-lg" 
+              src="/images/logo-avii.png"
+              width={500}
+              height={500}
+              alt="Avii logo"
+            />
             <h1 className="ml-4 text-2xl font-extrabold text-[#333] bg-gradient-to-r from-[#FF6B6B] to-[#FFA500] bg-clip-text text-transparent">
               Granja Avii
             </h1>
