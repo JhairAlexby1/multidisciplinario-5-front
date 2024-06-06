@@ -25,12 +25,12 @@ export const Header = () => {
               </li>
               <li>
                 <a href="#" className="text-[#333] hover:text-[#FFA500]">
-                  Estado de la Granja
+                Configuración
                 </a>
               </li>
               <li>
                 <a href="#" className="text-[#333] hover:text-[#FFA500]">
-                  Configuración
+                  salir
                 </a>
               </li>
             </ul>
