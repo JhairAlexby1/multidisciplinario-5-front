@@ -20,17 +20,17 @@ export const Header = () => {
           <nav>
             <ul className="flex space-x-4">
               <li>
-                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
+                <Link href="/homePage" className="text-[#333] hover:text-[#FFA500]">
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
+                <Link href="/settings" className="text-[#333] hover:text-[#FFA500]">
                 Configuración
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-[#333] hover:text-[#FFA500]">
+                <Link href="/login" className="text-[#333] hover:text-[#FFA500]">
                 Salir
                 </Link>
               </li>
