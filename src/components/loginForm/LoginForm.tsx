@@ -1,9 +1,9 @@
 "use client"
 
-import style from "./LoginForm.module.css"
+import style from "./LoginForm.module.css";
 import Image from "next/image";
-import logo from '../../../public/logo_avii_2.png'
-import { useRouter } from 'next/navigation'
+import logo from '../../../public/logo_avii_2.png';
+import { useRouter } from 'next/navigation';
 export const LoginForm = () => {
     const router = useRouter()
     const btnLogin = async () => {
