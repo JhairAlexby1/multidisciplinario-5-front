@@ -1,7 +1,5 @@
 import { LoginForm } from "@/components/loginForm/LoginForm";
 import { Metadata } from "next";
-import style from "./Login.module.css"
-
 
 
 export const metadata: Metadata = {
@@ -15,7 +13,7 @@ export default function Login() {
 
     return (
         <>
-           <div className={style.login}>
+           <div>
              <LoginForm/>
            </div>
         </>
