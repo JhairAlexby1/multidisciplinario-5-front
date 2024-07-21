@@ -4,6 +4,9 @@ import { useState } from "react"
 export const Humidity = () => {
   const[humidity, setHumidity] = useState("75%") 
 
+
+  
+
   return (
     <div className="rounded-lg bg-white p-6 shadow-md">
               <h2 className="mb-4 text-2xl font-extrabold text-[#333] bg-gradient-to-r from-[#FF6B6B] to-[#FFA500] bg-clip-text text-transparent">
