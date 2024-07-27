@@ -8,7 +8,7 @@ export const Temperature = () => {
   return (
     <div className="rounded-lg bg-white p-6 shadow-md">
               <h2 className="mb-4 text-2xl font-extrabold text-[#333] bg-gradient-to-r from-[#FF6B6B] to-[#FFA500] bg-clip-text text-transparent">
-                Temperatura
+                Temperatura 2
               </h2>
               <div className="flex items-center justify-between">
                 <div className="text-6xl font-extrabold text-[#333]">{temperature}</div>
