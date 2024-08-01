@@ -10,7 +10,7 @@ export const Temperature = () => {
     useEffect(() => {
         console.log("Intentando conectar con Socket.IO...");
 
-        const socket = io("http://localhost:3003");
+        const socket = io("http://localhost:3002");
 
         socket.on("connect", () => {
             console.log("Conexión Socket.IO abierta, ID:", socket.id);

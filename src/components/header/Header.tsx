@@ -26,7 +26,7 @@ export const Header = () => {
               </li>
               <li>
                 <Link href="/settings" className="text-[#333] hover:text-[#FFA500]">
-                Configuración
+                Informacion
                 </Link>
               </li>
               <li>
