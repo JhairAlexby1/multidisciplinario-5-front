@@ -9,34 +9,27 @@ export const Humidity = () => {
     useEffect(() => {
         console.log("Intentando conectar con Socket.IO...");
 
-        // Conecta con el servidor Socket.IO
         const socket = io("http://localhost:3003");
 
-        // Evento cuando la conexión se abre
         socket.on("connect", () => {
             console.log("Conexión Socket.IO abierta, ID:", socket.id);
         });
 
-        // Maneja la recepción de mensajes del evento 'sensors-client:getAll'
         socket.on("sensors-client:getAll", (data) => {
             console.log("Datos recibidos:", data);
-            // Actualiza el estado con la humedad recibida
             if (data && data.humidity !== undefined) {
                 setHumidity(`${data.humidity}%`);
             }
         });
 
-        // Maneja errores de conexión
         socket.on("connect_error", (error) => {
             console.error("Error en la conexión Socket.IO:", error);
         });
 
-        // Maneja la desconexión
         socket.on("disconnect", () => {
             console.log("Conexión Socket.IO cerrada");
         });
 
-        // Limpia la conexión Socket.IO cuando el componente se desmonta
         return () => {
             console.log("Cerrando conexión Socket.IO...");
             socket.disconnect();
