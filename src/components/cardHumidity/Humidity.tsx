@@ -5,8 +5,8 @@ import { io } from "socket.io-client";
 
 export const Humidity = () => {
     const [humidity, setHumidity] = useState("75%");
-    const [condition, setCondition] = useState("noche"); // Puede ser "noche", "nublado", "soleado"
-    const [color, setColor] = useState("#000"); // Color del contenedor del ícono
+    const [condition, setCondition] = useState("noche");
+    const [color, setColor] = useState("#000");
 
     useEffect(() => {
         console.log("Intentando conectar con Socket.IO...");
