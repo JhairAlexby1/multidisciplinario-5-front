@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import Swal from "sweetalert2";
 
 export const Temperature = () => {
-    const [temperature, setTemperature] = useState("25°C");
+    const [temperature, setTemperature] = useState(null);
 
     useEffect(() => {
         console.log("Intentando conectar con Socket.IO...");
@@ -18,7 +19,16 @@ export const Temperature = () => {
         socket.on("sensors-client:getAll", (data) => {
             console.log("Datos recibidos:", data);
             if (data && data.temperature !== undefined) {
-                setTemperature(`${data.temperature}°C`);
+                const temp = data.temperature;
+                setTemperature(`${temp}°C`);
+
+                if (temp < 25) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '¡Temperatura muy baja!',
+                        text: 'La temperatura ha caído por debajo de 25°C. Se recomienda prender la calefacción.',
+                    });
+                }
             }
         });
 
@@ -42,7 +52,9 @@ export const Temperature = () => {
                 Temperatura
             </h2>
             <div className="flex items-center justify-between">
-                <div className="text-6xl font-extrabold text-[#333]">{temperature}</div>
+                <div className="text-6xl font-extrabold text-[#333]">
+                    {temperature === null ? "Cargando..." : temperature}
+                </div>
                 <div className="rounded-full bg-[#FF6B6B] p-3 text-white">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

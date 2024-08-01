@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import Swal from "sweetalert2";
 
 export const Humidity = () => {
-    const [humidity, setHumidity] = useState("75%");
+    const [humidity, setHumidity] = useState(null); // Inicialmente null
     const [condition, setCondition] = useState("noche");
     const [color, setColor] = useState("#000");
 
@@ -22,6 +23,13 @@ export const Humidity = () => {
             if (data) {
                 if (data.humidity !== undefined) {
                     setHumidity(`${data.humidity}%`);
+                    if (data.humidity > 86) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: '¡Alerta de Humedad Alta!',
+                            text: 'La humedad ha superado el 86%. Tome medidas para reducirla.',
+                        });
+                    }
                 }
                 if (data.luminosity !== undefined) {
                     if (data.luminosity < 5) {
@@ -58,7 +66,9 @@ export const Humidity = () => {
                 Humedad
             </h2>
             <div className="flex items-center justify-between">
-                <div className="text-6xl font-extrabold text-[#333]">{humidity}</div>
+                <div className="text-6xl font-extrabold text-[#333]">
+                    {humidity === null ? "Cargando..." : humidity}
+                </div>
                 <div className="rounded-full p-3 text-white" style={{ backgroundColor: color }}>
                     {condition === "noche" && (
                         <svg
