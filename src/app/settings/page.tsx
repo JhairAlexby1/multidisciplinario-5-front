@@ -1,10 +1,14 @@
-import { PageSettings } from "@/components/pageSettings/PageSettings"
+"use client";
 
+import { PageSettings } from "@/components/pageSettings/PageSettings";
+import { useAuth } from "@/utils/auth";
 
 export default function Settings() {
-  return (
-    <>
-        <PageSettings />
-    </>
-  )
+    useAuth();
+
+    return (
+        <>
+            <PageSettings />
+        </>
+    );
 }
