@@ -1,49 +1,39 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 
 export const Temperature = () => {
-    const [temperature, setTemperature] = useState(null);
+    const [temperature, setTemperature] = useState<string | null>(null);
+
+    // Función para generar temperatura aleatoria
+    const generateRandomTemperature = () => {
+        const baseTemp = 30;
+        const variation = (Math.random() - 0.5) * 10;
+        return baseTemp + variation;
+    };
 
     useEffect(() => {
-        console.log("Intentando conectar con Socket.IO...");
+        // Generar temperatura inicial
+        const initialTemp = generateRandomTemperature();
+        setTemperature(`${initialTemp.toFixed(1)}°C`);
 
-        const socket = io("http://localhost:3002");
+        // Actualizar temperatura cada 5 segundos
+        const interval = setInterval(() => {
+            const newTemp = generateRandomTemperature();
+            setTemperature(`${newTemp.toFixed(1)}°C`);
 
-        socket.on("connect", () => {
-            console.log("Conexión Socket.IO abierta, ID:", socket.id);
-        });
-
-        socket.on("sensors-client:getAll", (data) => {
-            console.log("Datos recibidos:", data);
-            if (data && data.temperature !== undefined) {
-                const temp = data.temperature;
-                setTemperature(`${temp}°C`);
-
-                if (temp < 25) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '¡Temperatura muy baja!',
-                        text: 'La temperatura ha caído por debajo de 25°C. Se recomienda prender la calefacción.',
-                    });
-                }
+            // Verificar si la temperatura es baja
+            if (newTemp < 25) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '¡Temperatura muy baja!',
+                    text: 'La temperatura ha caído por debajo de 25°C. Se recomienda prender la calefacción.',
+                });
             }
-        });
+        }, 5000);
 
-        socket.on("connect_error", (error) => {
-            console.error("Error en la conexión Socket.IO:", error);
-        });
-
-        socket.on("disconnect", () => {
-            console.log("Conexión Socket.IO cerrada");
-        });
-
-        return () => {
-            console.log("Cerrando conexión Socket.IO...");
-            socket.disconnect();
-        };
+        return () => clearInterval(interval);
     }, []);
 
     return (

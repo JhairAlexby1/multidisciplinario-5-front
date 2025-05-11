@@ -1,63 +1,76 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 
 export const Humidity = () => {
-    const [humidity, setHumidity] = useState(null); // Inicialmente null
+    const [humidity, setHumidity] = useState<string | null>(null);
     const [condition, setCondition] = useState("noche");
     const [color, setColor] = useState("#000");
 
-    useEffect(() => {
-        console.log("Intentando conectar con Socket.IO...");
+    // Función para generar datos aleatorios
+    const generateRandomData = () => {
+        const baseHumidity = 65;
+        const humidityVariation = (Math.random() - 0.5) * 20;
+        const humidity = baseHumidity + humidityVariation;
 
-        const socket = io("http://localhost:3002");
+        const baseLuminosity = 15;
+        const luminosityVariation = (Math.random() - 0.5) * 10;
+        const luminosity = baseLuminosity + luminosityVariation;
 
-        socket.on("connect", () => {
-            console.log("Conexión Socket.IO abierta, ID:", socket.id);
-        });
-
-        socket.on("sensors-client:getAll", (data) => {
-            console.log("Datos recibidos:", data);
-            if (data) {
-                if (data.humidity !== undefined) {
-                    setHumidity(`${data.humidity}%`);
-                    if (data.humidity > 86) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: '¡Alerta de Humedad Alta!',
-                            text: 'La humedad ha superado el 86%. Tome medidas para reducirla.',
-                        });
-                    }
-                }
-                if (data.luminosity !== undefined) {
-                    if (data.luminosity < 5) {
-                        setCondition("noche");
-                        setColor("#000"); // Fondo oscuro
-                    } else if (data.luminosity <= 20) {
-                        setCondition("nublado");
-                        setColor("#9CA3AF"); // Gris para nublado
-                    } else {
-                        setCondition("soleado");
-                        setColor("#FFA500"); // Naranja para soleado
-                    }
-                }
-            }
-        });
-
-        socket.on("connect_error", (error) => {
-            console.error("Error en la conexión Socket.IO:", error);
-        });
-
-        socket.on("disconnect", () => {
-            console.log("Conexión Socket.IO cerrada");
-        });
-
-        return () => {
-            console.log("Cerrando conexión Socket.IO...");
-            socket.disconnect();
+        return {
+            humidity: Math.max(0, Math.min(100, humidity)),
+            luminosity: Math.max(0, luminosity)
         };
+    };
+
+    useEffect(() => {
+        // Generar datos iniciales
+        const initialData = generateRandomData();
+        setHumidity(`${initialData.humidity.toFixed(1)}%`);
+
+        // Establecer condición inicial basada en luminosidad
+        if (initialData.luminosity < 5) {
+            setCondition("noche");
+            setColor("#000");
+        } else if (initialData.luminosity <= 20) {
+            setCondition("nublado");
+            setColor("#9CA3AF");
+        } else {
+            setCondition("soleado");
+            setColor("#FFA500");
+        }
+
+        // Actualizar datos cada 5 segundos
+        const interval = setInterval(() => {
+            const data = generateRandomData();
+
+            // Actualizar humedad
+            setHumidity(`${data.humidity.toFixed(1)}%`);
+
+            // Verificar si la humedad es alta
+            if (data.humidity > 86) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '¡Alerta de Humedad Alta!',
+                    text: 'La humedad ha superado el 86%. Tome medidas para reducirla.',
+                });
+            }
+
+            // Actualizar condición basada en luminosidad
+            if (data.luminosity < 5) {
+                setCondition("noche");
+                setColor("#000");
+            } else if (data.luminosity <= 20) {
+                setCondition("nublado");
+                setColor("#9CA3AF");
+            } else {
+                setCondition("soleado");
+                setColor("#FFA500");
+            }
+        }, 5000);
+
+        return () => clearInterval(interval);
     }, []);
 
     return (
