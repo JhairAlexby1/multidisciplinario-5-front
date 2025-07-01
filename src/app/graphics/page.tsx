@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useAuth } from "@/utils/auth";
 import { Bar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -36,7 +36,7 @@ const options = {
         y: {
             beginAtZero: true,
             min: 0,
-            max: 100, // Ajustar según la escala esperada
+            max: 100,
             ticks: {
                 stepSize: 10,
             },
@@ -48,7 +48,7 @@ const options = {
     },
     plugins: {
         legend: {
-            position: 'top',
+            position: 'top' as const,
         },
         title: {
             display: true,
@@ -58,42 +58,63 @@ const options = {
 };
 
 export default function Graphics() {
-    const [temperatureAverage, setTemperatureAverage] = useState(0);
-    const [humidityAverage, setHumidityAverage] = useState(0);
-    let temperatureSum = 0;
-    let temperatureCount = 0;
-    let humiditySum = 0;
-    let humidityCount = 0;
+    // Verificar autenticación
+    useAuth();
+
+    const [temperatureAverage, setTemperatureAverage] = useState(30);
+    const [humidityAverage, setHumidityAverage] = useState(65);
+    const [temperatureSum, setTemperatureSum] = useState(0);
+    const [temperatureCount, setTemperatureCount] = useState(0);
+    const [humiditySum, setHumiditySum] = useState(0);
+    const [humidityCount, setHumidityCount] = useState(0);
+
+    // Función para generar datos aleatorios
+    const generateRandomData = () => {
+        const baseTemp = 30;
+        const tempVariation = (Math.random() - 0.5) * 10;
+        const temperature = baseTemp + tempVariation;
+
+        const baseHumidity = 65;
+        const humidityVariation = (Math.random() - 0.5) * 20;
+        const humidity = baseHumidity + humidityVariation;
+
+        return {
+            temperature: Math.max(0, temperature),
+            humidity: Math.max(0, Math.min(100, humidity))
+        };
+    };
 
     useEffect(() => {
-        const socket = io("http://localhost:3002");
+        // Generar datos iniciales
+        const initialData = generateRandomData();
+        setTemperatureSum(initialData.temperature);
+        setTemperatureCount(1);
+        setTemperatureAverage(initialData.temperature);
 
-        socket.on("connect", () => {
-            console.log("Conectado a Socket.IO");
-        });
+        setHumiditySum(initialData.humidity);
+        setHumidityCount(1);
+        setHumidityAverage(initialData.humidity);
 
-        socket.on("sensors-client:getAll", (data) => {
-            console.log("Datos recibidos:", data);
-            if (data) {
-                // Actualizar la suma y el contador para temperatura
-                temperatureSum += data.temperature;
-                temperatureCount += 1;
-                setTemperatureAverage(temperatureSum / temperatureCount);
+        // Actualizar datos cada 3 segundos
+        const interval = setInterval(() => {
+            const data = generateRandomData();
 
-                // Actualizar la suma y el contador para humedad
-                humiditySum += data.humidity;
-                humidityCount += 1;
-                setHumidityAverage(humiditySum / humidityCount);
-            }
-        });
+            // Actualizar temperatura
+            const newTempSum = temperatureSum + data.temperature;
+            const newTempCount = temperatureCount + 1;
+            setTemperatureSum(newTempSum);
+            setTemperatureCount(newTempCount);
+            setTemperatureAverage(newTempSum / newTempCount);
 
-        socket.on("disconnect", () => {
-            console.log("Desconectado de Socket.IO");
-        });
+            // Actualizar humedad
+            const newHumSum = humiditySum + data.humidity;
+            const newHumCount = humidityCount + 1;
+            setHumiditySum(newHumSum);
+            setHumidityCount(newHumCount);
+            setHumidityAverage(newHumSum / newHumCount);
+        }, 3000);
 
-        return () => {
-            socket.disconnect();
-        };
+        return () => clearInterval(interval);
     }, []);
 
     return (

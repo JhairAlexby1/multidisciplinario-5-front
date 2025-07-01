@@ -3,52 +3,78 @@
 import { useState } from 'react';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import Swal from 'sweetalert2';
+
+// Usuarios de prueba
+const mockUsers = [
+  { id: 1, email: 'admin@granja.com', password: 'admin123', name: 'Administrador' },
+  { id: 2, email: 'user@granja.com', password: 'user123', name: 'Usuario' },
+  { id: 3, email: 'test@test.com', password: 'test', name: 'Test User' }
+];
 
 export const LoginForm = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:3001/usuarios/login', {
-        email,
-        password
-      }, {
-        withCredentials: true
+    // Simular delay de red
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Buscar usuario en la lista de usuarios de prueba
+    const user = mockUsers.find(u => u.email === email && u.password === password);
+
+    if (user) {
+      // Guardar usuario en localStorage
+      localStorage.setItem('currentUser', JSON.stringify({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        token: `mock_token_${user.id}`
+      }));
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Inicio de sesión exitoso',
+        html: `
+          <p>Bienvenido/a, ${user.name}!</p>
+          <br>
+          <p>Usuarios de prueba:</p>
+          <ul style="text-align: left; margin-top: 10px;">
+            <li>admin@granja.com / admin123</li>
+            <li>user@granja.com / user123</li>
+            <li>test@test.com / test</li>
+          </ul>
+        `,
+        timer: 2000,
+        showConfirmButton: false
       });
 
-      if (response.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Inicio de sesión exitoso',
-          text: 'Redirigiendo a la página principal...',
-          timer: 2000,
-          showConfirmButton: false
-        });
-        setTimeout(() => {
-          router.push('/homePage');
-        }, 2000);
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudo iniciar sesión. Por favor, verifique sus credenciales.',
-        });
-        console.error('Login failed:', response.data);
-      }
-    } catch (error) {
+      setTimeout(() => {
+        router.push('/homePage');
+      }, 2000);
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Ocurrió un error durante el inicio de sesión. Inténtelo de nuevo más tarde.',
+        html: `
+          <p>Credenciales incorrectas. Por favor, intente con:</p>
+          <ul style="text-align: left; margin-top: 10px;">
+            <li>admin@granja.com / admin123</li>
+            <li>user@granja.com / user123</li>
+            <li>test@test.com / test</li>
+          </ul>
+        `,
       });
-      console.error('Error during login:', error);
     }
+  };
+
+  // Función para llenar credenciales de demo
+  const fillDemoCredentials = (email: string, password: string) => {
+    setEmail(email);
+    setPassword(password);
   };
 
   return (
@@ -66,6 +92,35 @@ export const LoginForm = () => {
           <h2 className="text-center text-3xl font-extrabold text-[#333] bg-gradient-to-r from-[#FF6B6B] to-[#FFA500] bg-clip-text text-transparent">
             Bienvenido de vuelta
           </h2>
+
+          {/* Botones de credenciales de demo */}
+          <div className="space-y-2">
+            <p className="text-center text-sm text-gray-600">Credenciales de demo:</p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                  type="button"
+                  onClick={() => fillDemoCredentials('admin@granja.com', 'admin123')}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded"
+              >
+                Admin
+              </button>
+              <button
+                  type="button"
+                  onClick={() => fillDemoCredentials('user@granja.com', 'user123')}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded"
+              >
+                User
+              </button>
+              <button
+                  type="button"
+                  onClick={() => fillDemoCredentials('test@test.com', 'test')}
+                  className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-1 rounded"
+              >
+                Test
+              </button>
+            </div>
+          </div>
+
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
