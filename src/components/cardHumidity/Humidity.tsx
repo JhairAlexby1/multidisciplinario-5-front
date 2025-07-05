@@ -85,6 +85,7 @@ export const Humidity = () => {
                 <div className="rounded-full p-3 text-white" style={{ backgroundColor: color }}>
                     {condition === "noche" && (
                         <svg
+                            data-testid="moon-icon"
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
                             fill="none"
@@ -101,6 +102,7 @@ export const Humidity = () => {
                     )}
                     {condition === "nublado" && (
                         <svg
+                            data-testid="cloud-icon"
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
                             fill="none"
@@ -117,6 +119,7 @@ export const Humidity = () => {
                     )}
                     {condition === "soleado" && (
                         <svg
+                        data-testid="sun-icon" 
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
                             fill="none"
