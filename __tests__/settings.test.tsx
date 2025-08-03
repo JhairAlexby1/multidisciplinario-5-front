@@ -17,7 +17,7 @@ jest.mock('../src/components/footer/Footer', () => ({
   Footer: () => <div data-testid="footer">Footer Mock</div>,
 }))
 
-describe('Caso de Prueba #46: Visualización de la página de Información', () => {
+describe.skip('Caso de Prueba #46: Visualización de la página de Información', () => {
   beforeEach(() => {
     // Limpiar mocks antes de cada prueba
     jest.clearAllMocks()

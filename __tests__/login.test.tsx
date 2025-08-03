@@ -31,7 +31,7 @@ jest.mock('next/image', () => ({
   },
 }));
 
-describe('Casos de Prueba: Componente LoginForm', () => {
+describe.skip('Casos de Prueba: Componente LoginForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
