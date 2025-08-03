@@ -157,10 +157,27 @@ Para convertir esto en un sistema completo, considera:
 
 ## 🚀 Inicio Rápido
 
+### Desarrollo Local
 1. `npm install`
 2. `npm run dev`
 3. Visitar `http://localhost:3000`
 4. Usar credenciales: `test@test.com` / `test`
+
+### Despliegue en Producción
+Para desplegar en Amazon EC2, consulta la [Guía de Despliegue](DEPLOYMENT.md) que incluye:
+- Configuración automática con GitHub Actions
+- Scripts de configuración para EC2
+- Monitoreo con PM2
+- Configuración de Nginx como proxy reverso
+
+## 🔧 Scripts Disponibles
+
+- `npm run dev` - Servidor de desarrollo
+- `npm run build` - Construir para producción
+- `npm run start` - Iniciar servidor de producción
+- `npm run lint` - Ejecutar linter
+- `npm test` - Ejecutar tests
+- `npm run test:watch` - Tests en modo watch
 
 ## 📄 Licencia
 
