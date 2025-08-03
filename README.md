@@ -182,3 +182,5 @@ Para desplegar en Amazon EC2, consulta la [Guía de Despliegue](DEPLOYMENT.md) q
 ## 📄 Licencia
 
 MIT
+
+prueba de despliegue
