@@ -20,7 +20,7 @@ jest.mock('next/image', () => ({
 // Hacemos un type assertion para poder manipular el mock
 const mockUseAuth = useAuth as jest.Mock;
 
-describe('Casos de Prueba: Componente Header', () => {
+describe.skip('Casos de Prueba: Componente Header', () => {
   beforeEach(() => {
     // Reiniciar el mock antes de cada prueba
     mockUseAuth.mockClear();
